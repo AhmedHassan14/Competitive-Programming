@@ -1,0 +1,49 @@
+#include<bits/stdc++.h>
+using namespace std;
+//#pragma warning(disable : 4996).
+#define Shingeki_no_Contest ios::sync_with_stdio(0);cin.tie(NULL);cout.tie(NULL);
+#define ll long long
+#define ull unsigned long long
+const ll mod = 1000000007, INF = 2e9;
+int dx[] = { 0, 0, 1, -1, 1, -1, 1, -1 };
+int dy[] = { 1, -1, 0, 0, -1, 1, 1, -1 };
+// I think Controlling your mind is the most power thing in the world
+
+// Think twice, Code once
+int main()
+{
+    Shingeki_no_Contest;
+    // constrains -> multiple   pow->long long   infinite loop->while(num > 0);
+    // freopen("input.txt", "r", stdin);  //freopen("output.txt", "w", stdout);
+
+    ll tests; cin >> tests;
+    while (tests--) {
+        ll n; cin >> n;
+        ll l = 0, r = n, ans = 0;
+        while (l <= r) {
+            ll mid = (l + r) / 2;
+            ll sum = mid * (mid + 1) / 2;
+            if (sum <= n)ans = mid, l = mid + 1;
+            else r = mid - 1;
+        }
+        ll sum1 = 0, sum2 = 0;
+        for (ll i = 1; i <= ans; i++) {
+            if (i % 4 == 1)sum1 += i;
+            else if (i % 4 == 2)sum2 += i;
+            else if (i % 4== 3)sum2 += i;
+            else if (i % 4== 0)sum1 += i;
+        }
+        ll num = ans * (ans + 1) / 2;
+        ll x = n - num;
+
+        if (ans % 4 == 1)sum2 += x;
+        else if (ans % 4 == 2)sum2 += x;
+        else if (ans % 4 == 3)sum1 += x;
+        else if (ans % 4 == 0)sum1 += x;
+
+        cout << sum1 << " " << sum2 << endl;
+    }
+
+    return 0;
+
+}
