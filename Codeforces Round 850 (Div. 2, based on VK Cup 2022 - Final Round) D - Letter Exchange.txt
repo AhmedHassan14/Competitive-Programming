@@ -1,0 +1,127 @@
+#include<bits/stdc++.h>
+using namespace std;
+//#pragma warning(disable : 4996).
+#define Shingeki_no_Contest ios::sync_with_stdio(0);cin.tie(NULL);cout.tie(NULL);
+#define ll long long
+#define ull unsigned long long
+const ll mod = 1000000007, INF = 2e9;
+int dx[] = { 0, 0, 1, -1, 1, -1, 1, -1 };
+int dy[] = { 1, -1, 0, 0, -1, 1, 1, -1 };
+// I think Controlling your mind is the most power thing in the world
+
+// Think twice, Code once
+int main()
+{
+    Shingeki_no_Contest;
+    // constrains -> multiple   pow->long long   infinite loop->while(num > 0);
+    // freopen("input.txt", "r", stdin);  //freopen("output.txt", "w", stdout);
+
+    ll tests; cin >> tests;
+    while (tests--) {
+        ll n; cin >> n;
+        map<pair<char, char>, vector<ll>>mp;
+        vector<pair<pair<char,char>, ll>>v;
+        vector<pair<pair<ll, char>, pair<ll, char>>>sol;
+        for (ll i = 1; i <= n; i++) {
+            string s; cin >> s;
+            map<char, ll>mp2;
+            mp2[s[0]]++; mp2[s[1]]++; mp2[s[2]]++;
+            if (mp2.size() == 1) {
+                if (s[0] == 'w') {
+                    mp[{'i', 'w'}].push_back(i);
+                    mp[{'n', 'w'}].push_back(i);
+                    v.push_back({ { 'i','w' }, i });
+                    v.push_back({ { 'n','w' },i });
+                }
+                else if (s[0] == 'i') {
+                    mp[{'w', 'i'}].push_back(i);
+                    mp[{'n', 'i'}].push_back(i);
+                    v.push_back({ { 'w','i' },i });
+                    v.push_back({ { 'n','i' },i });
+                }
+                else if (s[0] == 'n') {
+                    mp[{'i', 'n'}].push_back(i);
+                    mp[{'w', 'n'}].push_back(i);
+                    v.push_back({ { 'i','n' },i });
+                    v.push_back({ {'w','n' },i });
+                }
+            }
+            else if (mp2.size() == 2) {
+                if (mp2['w'] == 2 && mp2['i'] == 1) {
+                    mp[{'n', 'w'}].push_back(i);
+                    v.push_back({ {'n','w' },i });
+                }
+                else if (mp2['w'] == 2 && mp2['n'] == 1) {
+                    mp[{'i', 'w'}].push_back(i);
+                    v.push_back({ { 'i','w' },i });
+                }
+                else if (mp2['i'] == 2 && mp2['w'] == 1) {
+                    mp[{'n', 'i'}].push_back(i);
+                    v.push_back({ { 'n','i' },i });
+                }
+                else if (mp2['i'] == 2 && mp2['n'] == 1) {
+                    mp[{'w', 'i'}].push_back(i);
+                    v.push_back({ { 'w','i' },i });
+                }
+                else if (mp2['n'] == 2 && mp2['w'] == 1) {
+                    mp[{'i', 'n'}].push_back(i);
+                    v.push_back({ { 'i','n' },i });
+                }
+                else if (mp2['n'] == 2 && mp2['i'] == 1) {
+                    mp[{'w', 'n'}].push_back(i);
+                    v.push_back({ { 'w','n' },i });
+                }
+            }
+        }
+        
+     
+        for (ll i = 0; i < v.size(); i++) {
+            char a = v[i].first.first, b = v[i].first.second;
+            if (mp[{b, a}].size() > 0 && mp[{a, b}].size() > 0) {
+                ll x1 = mp[{a, b}].size() - 1, x2 = mp[{b, a}].size() - 1;
+                ll num1 = mp[{a, b}][x1];
+                ll num2 = mp[{b, a}][x2];
+                sol.push_back({ {num2,a},{num1,b} });
+                mp[{a, b}].pop_back();
+                mp[{b, a}].pop_back();
+            }
+        }
+
+        for (ll i = 0; i < v.size(); i++) {
+            char a = v[i].first.first, b = v[i].first.second;
+            char c;
+            map<char, ll>mp3;
+            mp3[a]++; mp3[b]++;
+            if (mp3['w'] == 0)c = 'w';
+            else if (mp3['i'] == 0)c = 'i';
+            else c = 'n';
+
+            if (mp[{b, a}].size() > 0 && mp[{a, b}].size() > 0) {
+                ll x1 = mp[{a, b}].size() - 1, x2 = mp[{b, a}].size() - 1;
+                ll num1 = mp[{a, b}][x1];
+                ll num2 = mp[{b, a}][x2];
+                sol.push_back({ {num2,a},{num1,b} });
+                mp[{a, b}].pop_back();
+                mp[{b, a}].pop_back();
+            }
+            else if (mp[{a, b}].size() > 0) {
+                ll x1 = mp[{a, b}].size() - 1, x2 = mp[{c, a}].size() - 1;
+                ll num1 = mp[{a, b}][x1];
+                ll num2 = mp[{c, a}][x2];
+                sol.push_back({ {num2,a},{num1,b} });
+                mp[{a, b}].pop_back();
+                mp[{c, a}].pop_back();
+                mp[{c, b}].push_back(num2);
+                
+            }
+        }
+        
+        cout << sol.size() << "\n";
+        for (ll i = 0; i < sol.size(); i++) {
+            cout << sol[i].first.first << " " << sol[i].first.second << " " << sol[i].second.first << " " << sol[i].second.second << "\n";
+        }
+    }
+
+    return 0;
+
+}
